@@ -19,25 +19,6 @@ Discussion will take place [on the issue tracker]({{ site.github }}/issues).
 
 A Chinese translation can be found at: <http://einverne.github.io/markdown-style-guide/zh.html>
 
-### Design goals
-
--   readable
-
--   portable: produces the same output, or good output, across multiple implementations.
-
-    Portability tests are carried out with the [Markdown Test Suite](https://github.com/karlcow/markdown-testsuite).
-
--   easy to write and modify later
-
--   diff friendly
-
--   easy to remember and implement on editors
-
--   provide rationale behind difficult choices.
-
-    Every rationale section or paragraph is marked with `rationale`
-    so you can skip it if you are only interested in the final decisions.
-
 ### Notable users
 
 - [GitLab](https://github.com/gitlabhq/gitlabhq/blob/master/CONTRIBUTING.md#style-guides)
@@ -84,6 +65,57 @@ When referring to this guide, specify all non-default options in a comma separat
 
     Use the Markdown Style Guide wrap:space, code:indented
 
+### Design goals
+
+-   readable
+
+-   portable: produces the same output, or good output, across multiple implementations.
+
+    Portability tests are carried out with the [Markdown Test Suite](https://github.com/karlcow/markdown-testsuite).
+
+-   easy to write and modify later
+
+-   diff friendly
+
+-   easy to remember and implement on editors
+
+-   provide rationale behind difficult choices.
+
+#### Readability vs writability
+
+Many design choices come down to:
+
+- do you want to write fast
+- or do you want people to read fast
+
+There may be use cases in which either is preferred:
+
+-   for source code, readability becomes more important,
+    as programmers are going to open the files on their editors often.
+
+    Editor features like syntax highlighting and line wrapping
+    can greatly reduce problems, but it is of course better if people
+    don't need to change their editors at all.
+
+-   for forums like Stack Overflow, people will very rarely read the source,
+    only the rendered output. So it might be better to optimize writing speed.
+
+The current style is inconsistent with either of those optimizations. For now,
+we propose two sets of options (profiles) which optimize either one: readability
+and writability profiles.
+
+##### Readability profile
+
+- `wrap:space`
+- `list-marker:asterisk`
+- `code:indented`
+
+##### Writability profile
+
+- `wrap:no`
+- `list-marker:hyphen`
+- `code:fenced`
+
 ### Typographic conventions
 
 When this style guide needs to represent multiple adjacent spaces,
@@ -119,12 +151,15 @@ some decisions were modified, and no original lines remain.
 
 <http://tirania.org/blog/archive/2014/Sep-30.html> by Miguel de Icaza (GNOME, Mono). Short.
 
+<https://github.com/slang800/markdown-styleguide>
+
 ### Lint tools
 
 Asked on Stack Exchange: <http://softwarerecs.stackexchange.com/questions/7138/markdown-lint-tool/>
 
 - <https://github.com/wooorm/mdast-lint>
 - <https://github.com/mivok/markdownlint>
+- <https://github.com/slang800/tidy-markdown>
 
 ## General rules
 
@@ -297,8 +332,13 @@ Downsides:
     readable long paragraphs.
 
 -   Requires users of programming text editors like Vim, which are usually configured to not wrap,
-    to toggle visual wrapping on. This can be automated,
-    but [EditorConfig gave it WONTFIX](https://github.com/editorconfig/editorconfig/issues/168)
+    to toggle visual wrapping on. This can be automated, but
+    [EditorConfig gave it WONTFIX](https://github.com/editorconfig/editorconfig/issues/168)
+
+-   Breaks some email systems, which always break a line on a single newline, and  
+    make your email  
+    look  
+    something like this.
 
 #### Option wrap:no {#option-wrap-no}
 
@@ -775,6 +815,8 @@ This is not the case if levels are different:
 
 ##### Unordered
 
+###### Option list-marker:hyphen {#option-list-marker-hyphen}
+
 Use the hyphen marker.
 
 Good:
@@ -795,7 +837,19 @@ Bad:
 Rationale:
 
 - asterisk `*` can be confused with bold or italic markers.
-- plus sign `+` is not popular.
+- plus sign `+` is not popular
+
+Downsides:
+
+- `*` and `+` are more visible. `*` is more visible
+
+###### Option list-marker:asterisk {#option-list-marker-asterisk}
+
+Use `*`.
+
+###### Option list-marker:plus {#option-list-marker-plus}
+
+Use `+`.
 
 ##### Ordered
 
@@ -1610,18 +1664,18 @@ Definitions:
 
 Good:
 
-    [id2]     http://long-url.com
-    [long id] http://a.com        "name 1"
+    [id2]:     http://long-url.com
+    [long id]: http://a.com        "name 1"
 
 Bad, not ordered by id:
 
-    [b] http://a.com
-    [a] http://b.com
+    [b]: http://a.com
+    [a]: http://b.com
 
 Bad, not aligned:
 
-    [id] http://id.com
-    [long id] http://long-id.com
+    [id]: http://id.com
+    [long id]: http://long-id.com
 
 #### Single or double quote titles
 
